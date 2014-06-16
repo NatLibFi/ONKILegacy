@@ -147,32 +147,64 @@ class OnkiRestServer {
       // non-existing URI - emulate ONKI3 HTTP API behavior
       $ret[] = array('conceptUri' => $uri, 'indent' => 0);
     }
-    
-    $indent = 1;
-    foreach ($response as $concept) {
-      if ($superConcepts != -1 && $superConcepts == ($indent - 2))
+
+    // start from requested concept
+    $curr_uri = $uri;
+    $level = 0;
+    do {
+      if (isset($response[$curr_uri])) {
+        $concept = $response[$curr_uri];
+      } else {
         break;
-      if ($indent === 1)
-        $parent = isset($concept['broader']) ? $response[$concept['broader'][0]] : null;
+      }
+
       $row = array(
-        'indent' => sizeof($response) - $indent,
+        'indent' => null, // placeholder, to be overwritten below
         'conceptUri' => $concept['uri'],
         'label' => $concept['prefLabel'],
       );
-      if (isset($concept['broader']))
+      
+      if (isset($concept['broader'])) {
         $row['parentUri'] = $concept['broader'][0];
-        if ($superConcepts != 0 || $row['conceptUri'] != $uri) {
-          // emulate ONKI3 HTTP API behavior
-          array_push($ret, $row);
-        }
-      $indent++;
-    }
+        $curr_uri = $row['parentUri'];
+      } else {
+        $curr_uri = null;
+      }
+      
+      $ret[] = $row;
+      ++$level;
+    } while ($curr_uri != null);
+    
+    // reverse and number by indent level
     $ret = array_reverse($ret);
+    foreach (array_keys($ret) as $idx) {
+      $ret[$idx]['indent'] = $idx;
+    }
 
+    // cut to size, if superConcepts limit ("p" parameter) was set
+    switch ($superConcepts) {
+      case -1: // everything
+        break;
+      case 0: // nothing
+        $ret = array();
+        break;
+      default: // N levels up
+        $ret = array_slice($ret, -1-$superConcepts, $superConcepts + 1);
+    }
+    
     $siblingArray = array();
-
+    
     if ($showSiblings == 1) {
-      if (isset($parent['narrower'])) {
+      // dig up siblings, if requested
+      if (isset($response[$uri]['broader'])) {
+        $parent_uri = $response[$uri]['broader'][0];
+        $parent = $response[$parent_uri];
+      } else {
+        $parent_uri = null;
+        $parent = null;
+      }
+
+      if ($parent !== null && isset($parent['narrower'])) {
         usort($parent['narrower'], array($this, "compareLabels"));
         foreach ($parent['narrower'] as $concept) {
           if ($concept['uri'] == $uri) continue;
