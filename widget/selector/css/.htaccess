@@ -1,0 +1,4 @@
+<Files "*.css">
+AddCharset utf-8 .css
+</Files>
+
