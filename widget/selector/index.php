@@ -198,13 +198,13 @@ echo "<h1 class='lang-en'>ONKI Selector for <i>".$ontotitle."</i></h1>\n";
 
 ?>
 
-<script type="text/Javascript" src="<?= $frontendPublicBaseUrl ?>/widget/selector/onki-selector.js?<?= $onkikey ?>&amp;l=<?= getValue('UILang') ?>"></script>
+<script type="text/Javascript" src="<?php echo $frontendPublicBaseUrl; ?>/widget/selector/onki-selector.js?<?php echo $onkikey; ?>&amp;l=<?php echo getValue('UILang'); ?>"></script>
 
 <p class="lang-fi">Integroi käyttöliittymäkomponentti järjestelmääsi lisäämällä seuraava koodirivi HTML-sivun HEAD-osioon:</p>
 <p class="lang-en">Integrate the user interface component into your system by adding the following code line into the HEAD section of the HTML page:</p>
 
 <div class="widget-code">
-&lt;script type="text/Javascript" src="http://onki.fi/widget/selector/onki-selector.js?<?= getValue('key'); ?>&amp;l=<?= getValue('UILang'); ?>"&gt;&lt;/script&gt;
+&lt;script type="text/Javascript" src="http://onki.fi/widget/selector/onki-selector.js?<?php echo getValue('key'); ?>&amp;l=<?php echo getValue('UILang'); ?>"&gt;&lt;/script&gt;
 </div>
 
 <p class="lang-fi">ja seuraava koodirivi HTML-sivun BODY-osion kohtaan, johon haluat sijoittaa komponentin:</p>
@@ -259,11 +259,11 @@ echo "<".$inputtag.">";
 ?>
 
 <?php //TODO: demosivujen url-politiikka? ?>
-<p class="lang-fi" style="margin-top:30px;">Voit kokeilla ONKI-valitsimen integroimista <a href="integration-demo.php?l=<?= getValue('l') ?>">testisivulla</a>.
+<p class="lang-fi" style="margin-top:30px;">Voit kokeilla ONKI-valitsimen integroimista <a href="integration-demo.php?l=<?php echo getValue('l'); ?>">testisivulla</a>.
 <!-- ONKI-valitsinta voi kokeilla myös <a href="/annotation/">annotaatio-demosivulla</a>. -->
 </p>
 <?php //TODO: linkitetty sivu pitää kääntää englanniksi ?>
-<!-- <p style="margin-top:30px;">You can try the ONKI Selector integration on a <a href="integration-demo.php?l=<?= getValue('l') ?>">test page</a>.</p> -->
+<!-- <p style="margin-top:30px;">You can try the ONKI Selector integration on a <a href="integration-demo.php?l=<?php echo getValue('l'); ?>">test page</a>.</p> -->
 <!-- <p class="lang-en" style="margin-top:30px;">You can try the ONKI Selector also on <a href="/annotation/">an annotation demo page</a>.</p> -->
 
 <p class="lang-fi" style="margin-top:30px;">Luotavan ONKI-valitsimen toimintoja voidaan muokata alla olevalla lomakkeella.</p>
@@ -271,7 +271,7 @@ echo "<".$inputtag.">";
 
 <form action="index.php" method="post">
 
-<input type="hidden" name="l" value="<?= getValue("l");  ?>"/>
+<input type="hidden" name="l" value="<?php echo getValue("l");  ?>"/>
 
 <table style="padding:20px; font-size:12px;">
 
@@ -365,11 +365,11 @@ else {
 ?>
 </td>
 <td>
-<?= getLabel($par); ?>
+<?php echo getLabel($par); ?>
 <?php
 if ($par == "key") {
 ?>
-: <a href="../../<?= getValue('l') ?>/signup/"><?= getLabel("generatekey"); ?></a>
+: <a href="../../<?php echo getValue('l'); ?>/signup/"><?php echo getLabel("generatekey"); ?></a>
 <?php
 }
 ?>
@@ -383,7 +383,7 @@ if ($par == "key") {
 
 </table>
 
-<input type="submit" value="<?= getLabel("generatecode"); ?>"/>
+<input type="submit" value="<?php echo getLabel("generatecode"); ?>"/>
 
 </form>
 
@@ -401,7 +401,7 @@ if (getValue('l') != getDefault('l'))
 
 <script type="text/javascript">
 <!--
-showLanguage('<?= $lang ?>');
+showLanguage('<?php echo $lang; ?>');
 //-->
 </script>
 
