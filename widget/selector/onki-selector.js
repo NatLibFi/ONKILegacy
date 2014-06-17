@@ -106,7 +106,7 @@ function loadOnkiScripts() {
 		var script = scripts[i];
 		var scriptElement = document.createElement("script");
 		//scriptElement.setAttribute("src", host+script+"?<?php echo $cacheid ?>");
-		scriptElement.setAttribute("src", host+script);
+		scriptElement.setAttribute("src", host+script+"?legacyver=1");
 		scriptElement.setAttribute("type", "text/Javascript");
 		scriptElement.setAttribute("charset", "UTF-8");
 		
