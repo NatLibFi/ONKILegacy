@@ -57,6 +57,10 @@ $RESOURCELABELS = array(
   ),
 );
 
+// type mappings to support legacy types
+$TYPEMAP = array(
+  'http://www.yso.fi/onto/yso-meta/2007-03-02/Concept' => 'http://www.w3.org/2004/02/skos/core#Concept',
+);
 
 class Response {
   public $out;
@@ -172,6 +176,8 @@ class OnkiSoapServer {
   }
   
   function search($params) {
+    global $TYPEMAP;
+  
     $q = $params->in0;
     $lang = $params->in1;
     $max = intval($params->in2);
@@ -185,6 +191,8 @@ class OnkiSoapServer {
         }
         $type = $type[0]; // FIXME discarded others
       }
+      if (array_key_exists($type, $TYPEMAP))
+        $type = $TYPEMAP[$type];
     } else {
       $type = null;
     }

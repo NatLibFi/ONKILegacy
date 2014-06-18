@@ -69,6 +69,10 @@ class SoapTest:
     print self.client.service.getConceptTree(uri, 'fi')
     print
 
+yso = SoapTest('yso')
+yso.testSearch('oh', 'fi', _type=['http://www.w3.org/2004/02/skos/core#Concept'])
+yso.testSearch('oh', 'fi', _type=['http://www.yso.fi/onto/yso-meta/2007-03-02/Concept'])
+
 ysa = SoapTest('ysa')
 ysa.testSearch('a', 'fi', limit=None)
 ysa.testSearch('helsinki', 'fi')
@@ -108,7 +112,6 @@ kauno.testGetConceptTree('http://www.yso.fi/onto/yso/p13286')
 puho = SoapTest('puho')
 puho.testGetConceptTree('http://www.yso.fi/onto/yso/p11671')
 
-yso = SoapTest('yso')
 
 koko = SoapTest('koko')
 
