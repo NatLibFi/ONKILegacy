@@ -142,3 +142,11 @@ koko.testExpandQuery('http://www.yso.fi/onto/koko/p33933', types=[
 koko.testExpandQuery('http://www.yso.fi/onto/koko/p31516', limit=20)
 
 koko.testGetConceptTree('http://www.yso.fi/onto/koko/p37038')
+
+koko.testGetLabel('http://www.yso.fi/onto/koko/p72169', 'fi')
+
+# replaced concept
+koko.testGetLabel('http://www.yso.fi/onto/koko/p32860', 'fi')
+
+# nonexistent
+koko.testGetLabel('http://www.yso.fi/onto/koko/p-not-here', 'fi')

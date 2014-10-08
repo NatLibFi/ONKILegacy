@@ -274,8 +274,19 @@ class OnkiSoapServer {
     $result->altLabel = null;
     $result->namespacePrefix = null;
     $result->serkki = null;
-    $result->title = $data['prefLabel'];
-    $result->uri = $uri;
+    if (isset($data['prefLabel'])) {
+      $result->title = $data['prefLabel'];
+      $result->uri = $uri;
+    } else { // maybe a replaced concept?
+      $graph = $this->load_rdf($uri);
+      $res = $graph->resource($uri);
+      $replacement = $res->getResource('dc:isReplacedBy');
+      if ($replacement !== null) {
+        $result->title = $replacement->label($lang);
+        $result->uri = $replacement->getUri();
+      }
+    
+    }
     return new getLabelResponse($result);
   }
   
