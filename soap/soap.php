@@ -368,33 +368,35 @@ class OnkiSoapServer {
     $resourceResults = array();
 
     $graph = $this->load_rdf($uri);
-    $res = $graph->resource($uri);
-    foreach ($res->propertyUris() as $propuri) {
-      if (count($props) > 0 && !in_array($propuri, $props)) continue; // skip unwanted props
-      $prop = "<$propuri>";
-      
-      // statements with literal value
-      foreach ($res->allLiterals($prop) as $literal) {
-        $result = new Statement();
-        $result->label = null;
-        $result->lang = $literal->getLang();
-        $result->predicateLabel = $this->getResourceLabel($propuri, $lang, $graph);
-        $result->predicateUri = $propuri;
-        $result->uri = null;
-        $result->value = $literal->getValue();
-        $literalResults[] = $result;
-      }
-      
-      // statements with resource value
-      foreach ($res->allResources($prop) as $resource) {
-        $result = new Statement();
-        $result->label = $this->getResourceLabel($resource->getUri(), $lang, $graph);
-        $result->lang = null;
-        $result->predicateLabel = $this->getResourceLabel($propuri, $lang, $graph);
-        $result->predicateUri = $propuri;
-        $result->uri = $resource->getUri();
-        $result->value = null;
-        $resourceResults[] = $result;
+    if ($graph !== null) {
+      $res = $graph->resource($uri);
+      foreach ($res->propertyUris() as $propuri) {
+        if (count($props) > 0 && !in_array($propuri, $props)) continue; // skip unwanted props
+        $prop = "<$propuri>";
+        
+        // statements with literal value
+        foreach ($res->allLiterals($prop) as $literal) {
+          $result = new Statement();
+          $result->label = null;
+          $result->lang = $literal->getLang();
+          $result->predicateLabel = $this->getResourceLabel($propuri, $lang, $graph);
+          $result->predicateUri = $propuri;
+          $result->uri = null;
+          $result->value = $literal->getValue();
+          $literalResults[] = $result;
+        }
+        
+        // statements with resource value
+        foreach ($res->allResources($prop) as $resource) {
+          $result = new Statement();
+          $result->label = $this->getResourceLabel($resource->getUri(), $lang, $graph);
+          $result->lang = null;
+          $result->predicateLabel = $this->getResourceLabel($propuri, $lang, $graph);
+          $result->predicateUri = $propuri;
+          $result->uri = $resource->getUri();
+          $result->value = null;
+          $resourceResults[] = $result;
+        }
       }
     }
 
