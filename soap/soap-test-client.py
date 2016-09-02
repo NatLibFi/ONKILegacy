@@ -149,6 +149,8 @@ koko.testGetProperties('http://www.yso.fi/onto/koko/p72167', 'fi')
 
 # replaced concept
 koko.testGetLabel('http://www.yso.fi/onto/koko/p10093', 'fi')
+koko.testGetProperties('http://www.yso.fi/onto/koko/p10093', 'fi')
 
 # nonexistent
 koko.testGetLabel('http://www.yso.fi/onto/koko/p-not-here', 'fi')
+koko.testGetProperties('http://www.yso.fi/onto/koko/p-not-here', 'fi')
