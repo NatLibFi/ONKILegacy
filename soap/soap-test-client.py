@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import sys
 from suds.client import Client
@@ -22,32 +22,32 @@ class SoapTest:
     self.client = Client(url)
 
   def testGetAvailableLanguages(self):
-    print "getAvailableLanguages():"
-    print "\n".join(sorted(self.client.service.getAvailableLanguages().string))
-    print
+    print("getAvailableLanguages():")
+    print("\n".join(sorted(self.client.service.getAvailableLanguages().string)))
+    print()
 
   def testGetAvailableTypeUris(self):
-    print "getAvailableTypeUris():"
-    print "\n".join(sorted(self.client.service.getAvailableTypeUris().string))
-    print
+    print("getAvailableTypeUris():")
+    print("\n".join(sorted(self.client.service.getAvailableTypeUris().string)))
+    print()
 
   def testGetLabel(self, uri, lang):
-    print "getLabel('%s','%s'):" % (uri, lang)
-    print self.client.service.getLabel(uri, lang)
-    print
+    print("getLabel('%s','%s'):" % (uri, lang))
+    print(self.client.service.getLabel(uri, lang))
+    print()
 
   def testSearch(self, term, lang, _type=None, parent=None, group=None, limit=10):
-    print "search('%s','%s', %s, %s, %s):" % (term, lang, repr(_type), repr(parent), repr(group))
+    print("search('%s','%s', %s, %s, %s):" % (term, lang, repr(_type), repr(parent), repr(group)))
     if _type is not None:
       _typearr = self.client.factory.create('ArrayOfString')
       for t in _type:
         _typearr.string.append(t)
       _type = _typearr
-    print self.client.service.search(term, lang, limit, _type, parent, group)
-    print
+    print(self.client.service.search(term, lang, limit, _type, parent, group))
+    print()
 
   def testExpandQuery(self, uris, limit=10, types=[]):
-    print "expandQuery(%s, %s):" % (repr(uris), repr(types))
+    print("expandQuery(%s, %s):" % (repr(uris), repr(types)))
     if not isinstance(uris, list): uris = [uris]
     arr = self.client.factory.create('ArrayOfString')
     for uri in uris:
@@ -55,19 +55,19 @@ class SoapTest:
     typearr = self.client.factory.create('ArrayOfString')
     for t in types:
       typearr.string.append(t)
-    print self.client.service.expandQuery(arr, "fi", limit, typearr)
-    print
+    print(self.client.service.expandQuery(arr, "fi", limit, typearr))
+    print()
 
   def testGetProperties(self, uri, lang):
-    print "getProperties('%s', '%s'):" % (uri, lang)
+    print("getProperties('%s', '%s'):" % (uri, lang))
     arr = self.client.factory.create('ArrayOfString')
-    print self.client.service.getProperties(uri, None, lang)
-    print
+    print(self.client.service.getProperties(uri, None, lang))
+    print()
 
   def testGetConceptTree(self, uri):
-    print "getConceptTree('%s'):" % uri
-    print self.client.service.getConceptTree(uri, 'fi')
-    print
+    print("getConceptTree('%s'):" % uri)
+    print(self.client.service.getConceptTree(uri, 'fi'))
+    print()
 
 yso = SoapTest('yso')
 yso.testSearch('oh', 'fi', _type=['http://www.w3.org/2004/02/skos/core#Concept'])

@@ -120,26 +120,17 @@ class OnkiRestServer {
   }
 
   public function getConceptHierarchy($vocab) {
-    $uri = null;
-    $parent = null;
-    $superConcepts = -1; 
-    $children = 1;
-    $showSiblings = 1;
+    $uri = $_GET['u'] ?? '';
+    $superConcepts = -1;
+    $children = $_GET['c'] ?? 1;
+    $showSiblings = $_GET['s'] ?? 1;
     $ret = array();
-    
-    $params = array('format'=>'application/json','uri'=>'');
-    if (isset($_GET['u'])) {
-      $uri = $_GET['u'];
-      $params['uri'] = $uri;
-    }
-    if (isset($_GET['s']))
-      $showSiblings = $_GET['s'];
-    if (isset($_GET['p']))
-      $superConcepts = ($_GET['p'] == '*') ? -1 : $_GET['p'];
+
+    $params = array('format'=>'application/json','uri'=>$uri);
+    if (isset($_GET['p']) && $_GET['p'] != '*')
+      $superConcepts = $_GET['p'];
     if (isset($_GET['l']))
       $params['lang'] = $_GET['l'];
-    if (isset($_GET['c']))
-      $children = $_GET['c'];
 
     $data = $this->rest_call($vocab, "hierarchy", $params);
     $response = (array) $data['broaderTransitive'];
@@ -194,15 +185,10 @@ class OnkiRestServer {
     
     $siblingArray = array();
     
-    if ($showSiblings == 1) {
+    if ($showSiblings == 1 && isset($response[$uri]['broader'])) {
       // dig up siblings, if requested
-      if (isset($response[$uri]['broader'])) {
-        $parent_uri = $response[$uri]['broader'][0];
-        $parent = $response[$parent_uri];
-      } else {
-        $parent_uri = null;
-        $parent = null;
-      }
+      $parent_uri = $response[$uri]['broader'][0];
+      $parent = $response[$parent_uri];
 
       if ($parent !== null && isset($parent['narrower'])) {
         usort($parent['narrower'], array($this, "compareLabels"));
@@ -219,7 +205,7 @@ class OnkiRestServer {
       }
     }
 
-    if(isset($children) && $children > 0) {
+    if($children > 0) {
       $childrenArray = $this->getChildren($vocab, $params, $children);
       $siblingArray = array_merge($siblingArray, $childrenArray);
     }
@@ -252,17 +238,19 @@ class OnkiRestServer {
     
     $data = $this->rest_call($vocab, "search", $params);
     $results = array();
-    foreach ($data['results'] as $concept) {
-      $vocab = isset($concept['exvocab']) ? $concept['exvocab'] : $concept['vocab'];
-      $result = array(
-        'namespacePrefix' => $vocab,
-        'label' => $concept['prefLabel'],
-        'uri' => $concept['uri'],
-        'serkki' => $vocab . ':' . $concept['prefLabel']
-      ); 
-      if (isset($concept['altLabel']))
-        $result['altLabel'] = $concept['altLabel'];
-      $results[] = $result;
+    if (isset($data['results'])) {
+      foreach ($data['results'] as $concept) {
+        $vocab = isset($concept['exvocab']) ? $concept['exvocab'] : $concept['vocab'];
+        $result = array(
+          'namespacePrefix' => $vocab,
+          'label' => $concept['prefLabel'],
+          'uri' => $concept['uri'],
+          'serkki' => $vocab . ':' . $concept['prefLabel']
+        );
+        if (isset($concept['altLabel']))
+          $result['altLabel'] = $concept['altLabel'];
+        $results[] = $result;
+      }
     }
 
     // implement maximum results parameter

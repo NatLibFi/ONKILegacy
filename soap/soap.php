@@ -150,7 +150,7 @@ class OnkiSoapServer {
     $url = $this->rest_base . $this->vocid . "/" . "data" . $qstr;
     $result = $this->get_http($url);
     if ($result === null) return null;
-    $graph = new EasyRdf_Graph();
+    $graph = new EasyRdf\Graph();
     $graph->parse($result, 'turtle');
     return $graph;
   }
@@ -184,23 +184,22 @@ class OnkiSoapServer {
     $max = $max > 0 ? $max : 50; // default limit in ONKI3 SOAP API
     
     if ($params->in3 !== null) {
-      $type = $params->in3->string;
+      $type = $params->in3->string ?? "";
       if (is_array($type)) {
-        if (count($type) > 1) {
-          error_log("Warning: Request to ONKI SOAP search method with " . count($type) . " type restrictions");
-        }
-        $type = $type[0]; // FIXME discarded others
+        $type = implode(" ", $type);
       }
-      if (array_key_exists($type, $TYPEMAP))
+      if (array_key_exists($type, $TYPEMAP)) {
         $type = $TYPEMAP[$type];
+      }
     } else {
       $type = null;
     }
 
     if ($params->in4 !== null) {
-      $parent = $params->in4->string;
+      $parent = $params->in4->string ?? "";
       if (is_array($parent)) {
         if (count($parent) > 1) {
+          // 11-12-2020 Finto API does not support multiple values, see https://github.com/NatLibFi/Skosmos/issues/1107
           error_log("Warning: Request to ONKI SOAP search method with " . count($parent) . " parent restrictions");
         }
         $parent = $parent[0]; // FIXME discarded others
@@ -210,9 +209,10 @@ class OnkiSoapServer {
     }
 
     if ($params->in5 !== null) {
-      $group = $params->in5->string;
+      $group = $params->in5->string ?? "";
       if (is_array($group)) {
         if (count($group) > 1) {
+          // 11-12-2020 Finto API does not support multiple values, see https://github.com/NatLibFi/Skosmos/issues/1107
           error_log("Warning: Request to ONKI SOAP search method with " . count($group) . " group restrictions");
         }
         $group = $group[0]; // FIXME discarded others
@@ -233,19 +233,21 @@ class OnkiSoapServer {
 
     $results = array();
     $seen_uris = array();
-    foreach($data['results'] as $res) {
-      $result = new OnkiQueryResult();
-      if (isset($res['altLabel'])) $result->altLabel = $res['altLabel'];
-      $result->namespacePrefix = isset($res['exvocab']) ? $res['exvocab'] : $res['vocab'];
-      $result->serkki = $res['prefLabel'];
-      $result->title = $res['prefLabel'];
-      $result->uri = $res['uri'];
-      if (!in_array($res['uri'], $seen_uris)) {
-        $results[] = $result;
-        $seen_uris[] = $res['uri'];
-      }
+    if (isset($data['results'])) {
+        foreach($data['results'] as $res) {
+            $result = new OnkiQueryResult();
+            $result->altLabel = $res['altLabel'] ?? null;
+            $result->namespacePrefix = $res['exvocab'] ?? $res['vocab'];
+            $result->serkki = $res['prefLabel'] ?? null;
+            $result->title = $res['prefLabel'] ?? null;
+            $result->uri = $res['uri'];
+            if (!in_array($res['uri'], $seen_uris)) {
+                $results[] = $result;
+                $seen_uris[] = $res['uri'];
+            }
+        }
     }
-    
+
     // implement maximum results parameter
     // (have to do it after REST call to find out the real number of hits)
     if ($max)
@@ -315,8 +317,8 @@ class OnkiSoapServer {
         $result = new OnkiQueryResult();
         $result->altLabel = null;
         $result->namespacePrefix = null;
-        $result->serkki = $cdata['prefLabel'];
-        $result->title = $cdata['prefLabel'];
+        $result->serkki = $cdata['prefLabel'] ?? null;
+        $result->title = $cdata['prefLabel'] ?? null;
         $result->uri = $curi;
         $hits[] = $result;
         

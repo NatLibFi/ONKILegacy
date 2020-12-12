@@ -1,9 +1,9 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import sys
 import json
-import urllib
-import urllib2
+import urllib.request, urllib.parse, urllib.error
+import urllib.request, urllib.error, urllib.parse
 
 if '-l' in sys.argv[1:]: # local
   HOST = 'localhost'
@@ -16,25 +16,26 @@ BASEURL='http://%s/key-%s/api/v2/http/' % (HOST, ONKIKEY)
 encoder = json.JSONEncoder(sort_keys=True, indent=2)
 
 def call(group, method, params=None, decode_json=True):
-  print "--------"
+  print("--------")
   if decode_json:
     jsoninfo = "JSON"
   else:
     jsoninfo = "Not JSON"
-  print "call: %s/%s(%s)" % (group, method, params)
+  print("call: %s/%s(%s)" % (group, method, params))
   url = "%s/%s" % (group, method)
   if params:
-    url += "?" + urllib.urlencode(params)
-  print "URL:", url
-  print "--"
-  req = urllib2.urlopen(BASEURL + url)
-  print "Content-type:", req.info().getheader('Content-type')
-  print
+    url += "?" + urllib.parse.urlencode(params)
+  print("URL:", url)
+  print("--")
+  req = urllib.request.urlopen(BASEURL + url)
+  print(req.headers)
+  print("Content-type:", req.headers['Content-type'])
+  print()
   if decode_json:
-    print encoder.encode(json.load(req))
+    print(encoder.encode(json.load(req)))
   else:
-    print req.read()
-  print
+    print(req.read())
+  print()
 
 call('onto/kauno', 'search', {'q': 'fluns', 'l': 'fi'})
 call('onto/kauno', 'search', {'q': 'kissa', 'l': 'fi', 'ac': 'false'})
@@ -72,7 +73,7 @@ for uri in (AFO + "p1", AFO + "p4205", AFO + "p1669", AFO + "p12345"):
         if p is not None: params['p'] = p
         if c is not None: params['c'] = c
         if s is not None: params['s'] = s
-        print params
+        print(params)
         call('onto/afo', 'getConceptHierarchy', params)
         
 
