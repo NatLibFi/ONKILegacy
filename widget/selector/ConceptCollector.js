@@ -168,10 +168,13 @@ function ConceptCollector(id,collectorname,onkisearch,onkiFeatures,fetchUris,fet
 		spanElem.appendChild(textNode);
 		
 		if (this.onkiFeatures && url) {		
+            spanElem.setAttribute('target', "_blank");
+            /*
 			if (spanElem.addEventListener) // for FF
 				spanElem.addEventListener("click", new Function("event", this.collectorname + ".openOnkiReplace('"+onkiId+"', '"+uri+"', '"+url+"'); event.stopPropagation(); event.preventDefault();"), false);
 			else if (spanElem.attachEvent) // for IE
 				spanElem.attachEvent("onclick", new Function("event", this.collectorname + ".openOnkiReplace('"+onkiId+"', '"+uri+"', '"+url+"'); event.cancelBubble=true; event.returnValue=false;"));
+            */
 		}
 		valuediv.appendChild(spanElem);
 		
