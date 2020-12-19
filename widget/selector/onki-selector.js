@@ -21,7 +21,7 @@ if ($_SERVER['HTTP_HOST'] != "onki.fi")
 header("Content-type: application/x-javascript; charset=utf-8");
 
 $protocol = "http";
-if (isset($_SERVER['HTTP_X_POUND_HTTPS']) && $_SERVER['HTTP_X_POUND_HTTPS'] == 'on')
+if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off' || (isset($_SERVER['HTTP_X_POUND_HTTPS']) && $_SERVER['HTTP_X_POUND_HTTPS'] == 'on'))
 	$protocol .= "s";
 $baseurl = $protocol."://".$_SERVER['SERVER_NAME'].dirname($_SERVER['REQUEST_URI'])."/";
 $onkiurl = $protocol."://onki.fi";
