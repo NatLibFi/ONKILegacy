@@ -8,7 +8,7 @@ if ($_SERVER['SERVER_NAME'] == 'onki.fi' || $_SERVER['SERVER_NAME'] == 'dev.onki
 else
     $onkikey = '2ba36d50f003848034a2f4628d371a62'; // tkk.fi
 	
-$frontendPublicBaseUrl = "http://" . $_SERVER['SERVER_NAME'];
+$frontendPublicBaseUrl = "//" . $_SERVER['SERVER_NAME'];
 if (strpos($_SERVER['REQUEST_URI'], '/public/') !== false)
 	$frontendPublicBaseUrl .= substr($_SERVER['REQUEST_URI'], 0, strpos($_SERVER['REQUEST_URI'], '/public/')+7);
 
