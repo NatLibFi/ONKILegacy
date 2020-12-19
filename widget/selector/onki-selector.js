@@ -20,12 +20,9 @@ if ($_SERVER['HTTP_HOST'] != "onki.fi")
 
 header("Content-type: application/x-javascript; charset=utf-8");
 
-$protocol = "http";
-if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off' || (isset($_SERVER['HTTP_X_POUND_HTTPS']) && $_SERVER['HTTP_X_POUND_HTTPS'] == 'on'))
-	$protocol .= "s";
-$baseurl = $protocol."://".$_SERVER['SERVER_NAME'].dirname($_SERVER['REQUEST_URI'])."/";
-$onkiurl = $protocol."://onki.fi";
-$onkiHttpApiUrl = $protocol."://".$_SERVER['SERVER_NAME'].dirname(dirname(dirname($_SERVER['REQUEST_URI'])));
+$baseurl = $_SERVER['SERVER_NAME'].dirname($_SERVER['REQUEST_URI'])."/";
+$onkiurl = "onki.fi";
+$onkiHttpApiUrl = $_SERVER['SERVER_NAME'].dirname(dirname(dirname($_SERVER['REQUEST_URI'])));
 if (substr($onkiHttpApiUrl, -1) != '/')
 	$onkiHttpApiUrl .= "/";
 $onkiHttpApiUrl .= "api/v2/http/repo/";
@@ -49,8 +46,12 @@ onkiFrontendUrl = "http://onki.fi/api/v2/http/repo/";
 
 var fintoApiUrl = "://api.finto.fi/rest/v1/";
 if ("https:" == document.location.protocol) {
+  host = 'https://' + host;
+  ysourl = 'https://' + ysourl;
   fintoApiUrl = 'https' + fintoApiUrl;
 } else {
+  host = 'http://' + host;
+  ysourl = 'http://' + ysourl;
   fintoApiUrl = 'http' + fintoApiUrl;
 }  
 
