@@ -1,0 +1,62 @@
+@charset "utf-8";
+/* ONKI Reference Style Sheet 04/2011 */
+
+body {
+	margin: 0;
+	padding: 0;
+	background: #fcfcfc;
+	font-family: Arial,Helvetica,Tahoma,sans-serif;
+	color: #222222;
+	font-size: 13px;
+	text-align: left;
+	line-height: 1.45;
+}
+
+#main-content {
+	margin: 0 50px 50px;
+}
+
+.examplecasebox {
+	border: 2px solid #aaaaaa;
+	padding: 15px;
+}
+
+.methodDescription {
+	padding-bottom: 15px;
+}
+
+.codeexample {
+	border: 2px solid #7777ff;
+	padding: 5px;
+	background: #ffffaa;
+}
+
+.codeexampleToggle {
+	font-weight: bold;
+	font-size: 93%;
+}
+
+.codeexampleToggle .show {
+	padding: 3px 5px 3px 3px;
+	background: #AACCFF;
+	color: blue;
+}
+
+.codeexampleToggle .hide {
+	padding: 3px 5px 3px 3px;
+	color: #AACCFF;
+	background: blue;
+}
+
+a.codeexampleToggle {
+	text-decoration: none;
+}
+
+td {
+	border: none;
+}
+
+table {
+	border: 2px solid #dddddd;
+	background: #ffffff;
+}

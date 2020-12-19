@@ -12,7 +12,7 @@ $frontendPublicBaseUrl = "http://" . $_SERVER['SERVER_NAME'];
 if (strpos($_SERVER['REQUEST_URI'], '/public/') !== false)
 	$frontendPublicBaseUrl .= substr($_SERVER['REQUEST_URI'], 0, strpos($_SERVER['REQUEST_URI'], '/public/')+7);
 
-$repositoryMetadata = json_decode(file_get_contents($frontendPublicBaseUrl . "/api/v2/http/repo/ontologies?format=json-onkiselector"), true);
+$repositoryMetadata = json_decode(file_get_contents("http://onki.fi/api/v2/http/repo/ontologies?format=json-onkiselector"), true);
 
 function getLabel($key, $langopt=null) {
   global $labels;

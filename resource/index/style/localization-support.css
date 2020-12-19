@@ -1,0 +1,17 @@
+.lang-fi {
+  display: none;
+}
+
+.lang-fi-hidden, .lang-en-hidden {
+  display: none;
+}
+
+A.langmenu-fi-selected, A.langmenu-en-selected {
+  font-weight: bold;
+  text-decoration: none;
+  color: black;
+}
+
+.langmenu-fi, .langmenu-en {
+
+}
