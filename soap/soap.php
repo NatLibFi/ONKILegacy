@@ -384,7 +384,8 @@ class OnkiSoapServer {
           $result->predicateLabel = $this->getResourceLabel($propuri, $lang, $graph);
           $result->predicateUri = $propuri;
           $result->uri = null;
-          $result->value = $literal->getValue();
+          $val = $literal->getValue();
+          $result->value = ($val instanceof DateTime) ? $val->format('Y-m-d') : $val;
           $literalResults[] = $result;
         }
         
