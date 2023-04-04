@@ -1,7 +1,3 @@
 <Files "*.js">
 AddCharset utf-8 .js
 </Files>
-
-<Files onki-selector.js>
-SetHandler application/x-httpd-php
-</Files>
