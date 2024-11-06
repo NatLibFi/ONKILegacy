@@ -42,16 +42,18 @@ list($temp, $cacheid) = explode(".", microtime(true));
 var host = "<?php echo $baseurl ?>";
 var ysourl = "<?php echo $onkiurl ?>";
 var onkiFrontendUrl = "<?php echo $onkiHttpApiUrl ?>"; // onki frontend http get api
-onkiFrontendUrl = "http://onki.fi/api/v2/http/repo/"; 
+onkiFrontendUrl = "onki.fi/api/v2/http/repo/";
 
 var fintoApiUrl = "://api.finto.fi/rest/v1/";
 if ("https:" == document.location.protocol) {
   host = 'https://' + host;
   ysourl = 'https://' + ysourl;
+  onkiFrontendUrl = 'https://' + onkiFrontendUrl;
   fintoApiUrl = 'https' + fintoApiUrl;
 } else {
   host = 'http://' + host;
   ysourl = 'http://' + ysourl;
+  onkiFrontendUrl = 'http://' + onkiFrontendUrl;
   fintoApiUrl = 'http' + fintoApiUrl;
 }  
 
